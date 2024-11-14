@@ -1,3 +1,4 @@
+import iziToast from 'izitoast';
 import { fetchImages } from './js/pixabay-api';
 import {
   renderImages,
@@ -44,7 +45,7 @@ document
         showNoResultsMessage();
       } else {
         renderImages(data.hits);
-        toggleLoadMoreButton(true);
+        toggleLoadMoreButton(data.hits.length >= 15);
       }
     } catch (error) {
       showError('Something went wrong. Please try again later.');
@@ -78,7 +79,7 @@ document
           behavior: 'smooth',
         });
 
-        if (currentPage * 15 >= totalHits) {
+        if (data.hits.length < 15 || currentPage * 15 >= totalHits) {
           showEndOfResultsMessage();
           toggleLoadMoreButton(false);
         }
